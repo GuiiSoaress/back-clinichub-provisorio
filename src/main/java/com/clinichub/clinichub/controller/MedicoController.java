@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.clinichub.clinichub.model.dto.DadosCadastroMedico;
+import com.clinichub.clinichub.model.entity.Medico;
 import com.clinichub.clinichub.repository.MedicoRepository;
 
 @RestController 
@@ -20,7 +21,7 @@ public class MedicoController {
 
     @PostMapping
     public void cadastrar(@RequestBody DadosCadastroMedico dados){
-        System.out.println(dados);
+        medicoRepository.save(new Medico(dados));
     }
 
 }
