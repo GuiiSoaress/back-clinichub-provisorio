@@ -269,7 +269,7 @@ class ClinichubControllersTest {
     }
 
     @Test
-    void deveAgendarConsultaComSucessoERetornar200() throws Exception {
+    void deveAgendarConsultaComSucessoERetornar201ComLocation() throws Exception {
         var data = LocalDateTime.now().plusDays(2).withHour(10).withMinute(0).withSecond(0).withNano(0);
         when(consultaService.agendar(any(DadosAgendamentoConsulta.class)))
                 .thenReturn(new DadosDetalhamentoConsulta(1L, 2L, 3L, data));
@@ -285,10 +285,37 @@ class ClinichubControllersTest {
         mockMvc.perform(post("/consultas")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
+                .andExpect(header().string("Location", endsWith("/consultas/1")))
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.idMedico").value(2L))
                 .andExpect(jsonPath("$.idPaciente").value(3L));
+    }
+
+    @Test
+    void deveListarConsultasIncluindoCanceladasEDetalharPorId() throws Exception {
+        var data = LocalDateTime.now().plusDays(2).withHour(10).withMinute(0).withSecond(0).withNano(0);
+        var ativa = new DadosDetalhamentoConsulta(1L, 2L, 3L, data, null);
+        var cancelada = new DadosDetalhamentoConsulta(2L, 2L, 4L, data.plusDays(1), MotivoCancelamento.PACIENTE_DESISTIU);
+
+        when(consultaService.listar(any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of(ativa, cancelada), PageRequest.of(0, 10), 2));
+
+        mockMvc.perform(get("/consultas"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].id").value(1L))
+                .andExpect(jsonPath("$.content[0].motivoCancelamento").doesNotExist())
+                .andExpect(jsonPath("$.content[1].id").value(2L))
+                .andExpect(jsonPath("$.content[1].motivoCancelamento").value("PACIENTE_DESISTIU"));
+
+        when(consultaService.detalhar(1L)).thenReturn(ativa);
+        mockMvc.perform(get("/consultas/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1L));
+
+        when(consultaService.detalhar(99L)).thenThrow(new EntityNotFoundException());
+        mockMvc.perform(get("/consultas/99"))
+                .andExpect(status().isNotFound());
     }
 
     @Test

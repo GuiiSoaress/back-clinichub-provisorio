@@ -1,0 +1,10 @@
+target/
+.git/
+.gitignore
+.gitattributes
+.idea/
+.vscode/
+*.iml
+*.md
+insomnia-clinichub.json
+docker-compose.yml

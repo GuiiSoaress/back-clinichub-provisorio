@@ -62,8 +62,13 @@ public class ConsultaService {
     }
 
     public Page<DadosDetalhamentoConsulta> listar(Pageable paginacao) {
-        return consultaRepository.findAllByMotivoCancelamentoIsNull(paginacao)
+        return consultaRepository.findAll(paginacao)
                 .map(DadosDetalhamentoConsulta::new);
+    }
+
+    public DadosDetalhamentoConsulta detalhar(Long id) {
+        var consulta = consultaRepository.getReferenceById(id);
+        return new DadosDetalhamentoConsulta(consulta);
     }
 
     public void cancelar(DadosCancelamentoConsulta dados) {

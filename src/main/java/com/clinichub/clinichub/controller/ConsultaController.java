@@ -7,10 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.clinichub.clinichub.model.dto.DadosAgendamentoConsulta;
 import com.clinichub.clinichub.model.dto.DadosCancelamentoConsulta;
@@ -31,9 +33,12 @@ public class ConsultaController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<DadosDetalhamentoConsulta> agendar(@RequestBody @Valid DadosAgendamentoConsulta dados) {
+    public ResponseEntity<DadosDetalhamentoConsulta> agendar(
+            @RequestBody @Valid DadosAgendamentoConsulta dados,
+            UriComponentsBuilder uriBuilder) {
         var dto = consultaService.agendar(dados);
-        return ResponseEntity.ok(dto);
+        var uri = uriBuilder.path("/consultas/{id}").buildAndExpand(dto.id()).toUri();
+        return ResponseEntity.created(uri).body(dto);
     }
 
     @GetMapping
@@ -41,6 +46,11 @@ public class ConsultaController {
             @PageableDefault(size = 10, sort = {"data"}) Pageable paginacao) {
         var page = consultaService.listar(paginacao);
         return ResponseEntity.ok(page);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<DadosDetalhamentoConsulta> detalhar(@PathVariable Long id) {
+        return ResponseEntity.ok(consultaService.detalhar(id));
     }
 
     @DeleteMapping
