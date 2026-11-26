@@ -1,0 +1,540 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-11-26T00:05:00.000Z",
+  "__export_source": "insomnia.desktop.app:v13.5.0",
+  "resources": [
+    {
+      "_id": "wrk_clinichub_parte3",
+      "_type": "workspace",
+      "parentId": null,
+      "modified": 1764115500000,
+      "created": 1764115500000,
+      "name": "ClinicHub – Parte 3",
+      "description": "Roteiro de testes no Insomnia - API Rest Parte 3 (T1 a T16)",
+      "scope": "collection"
+    },
+    {
+      "_id": "env_clinichub_parte3_base",
+      "_type": "environment",
+      "parentId": "wrk_clinichub_parte3",
+      "modified": 1764115500000,
+      "created": 1764115500000,
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:8080",
+        "token": "cole-o-token-aqui"
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "base_url",
+          "token"
+        ]
+      },
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1764115500000
+    },
+    {
+      "_id": "fld_autenticacao",
+      "_type": "request_group",
+      "parentId": "wrk_clinichub_parte3",
+      "modified": 1764115500000,
+      "created": 1764115500000,
+      "name": "Autenticação",
+      "description": "Testes de autenticação e geração de token JWT (T2 a T4)",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 100
+    },
+    {
+      "_id": "fld_medicos",
+      "_type": "request_group",
+      "parentId": "wrk_clinichub_parte3",
+      "modified": 1764115500000,
+      "created": 1764115500000,
+      "name": "Médicos",
+      "description": "Testes de segurança, CRUD e tratamento de erros em Médicos (T1, T5 a T14)",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 200
+    },
+    {
+      "_id": "fld_pacientes",
+      "_type": "request_group",
+      "parentId": "wrk_clinichub_parte3",
+      "modified": 1764115500000,
+      "created": 1764115500000,
+      "name": "Pacientes",
+      "description": "Testes de cadastro e proteção JWT em Pacientes (T15 e T16)",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 300
+    },
+    {
+      "_id": "req_t2",
+      "_type": "request",
+      "parentId": "fld_autenticacao",
+      "modified": 1764115500000,
+      "created": 1764115500000,
+      "url": "{{ _.base_url }}/login",
+      "name": "T2 Login com senha errada",
+      "description": "Objetivo: Ver a resposta de credenciais inválidas. Esperado: 401 Unauthorized {\"mensagem\": \"Login ou senha inválidos\"}",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"login\": \"admin@clinichub.com\",\n  \"senha\": \"senha-errada\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_t3",
+      "_type": "request",
+      "parentId": "fld_autenticacao",
+      "modified": 1764115500000,
+      "created": 1764115500000,
+      "url": "{{ _.base_url }}/login",
+      "name": "T3 Login com usuário inexistente",
+      "description": "Objetivo: Confirmar que a mensagem é a mesma do T2. Esperado: 401 Unauthorized {\"mensagem\": \"Login ou senha inválidos\"}",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"login\": \"naoexiste@clinichub.com\",\n  \"senha\": \"123456\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 200,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_t4",
+      "_type": "request",
+      "parentId": "fld_autenticacao",
+      "modified": 1764115500000,
+      "created": 1764115500000,
+      "url": "{{ _.base_url }}/login",
+      "name": "T4 Login correto",
+      "description": "Objetivo: Obter o token JWT. Esperado: 200 OK {\"token\": \"eyJ...\"}. Ação: Copie o valor do token (sem aspas) e cole na variável de ambiente 'token'.",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"login\": \"admin@clinichub.com\",\n  \"senha\": \"123456\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 300,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_t1",
+      "_type": "request",
+      "parentId": "fld_medicos",
+      "modified": 1764115500000,
+      "created": 1764115500000,
+      "url": "{{ _.base_url }}/medicos",
+      "name": "T1 Listar médicos SEM token",
+      "description": "Objetivo: Provar que a API está protegida. Esperado: 401 Unauthorized, corpo vazio.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": 100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_t5",
+      "_type": "request",
+      "parentId": "fld_medicos",
+      "modified": 1764115500000,
+      "created": 1764115500000,
+      "url": "{{ _.base_url }}/medicos",
+      "name": "T5 Listar médicos COM token",
+      "description": "Objetivo: Provar que, com o token, a API libera o acesso. Esperado: 200 OK (\"content\": [], \"size\": 10, \"totalElements\": 0).",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": 200,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_t6",
+      "_type": "request",
+      "parentId": "fld_medicos",
+      "modified": 1764115500000,
+      "created": 1764115500000,
+      "url": "{{ _.base_url }}/medicos",
+      "name": "T6 Token adulterado",
+      "description": "Objetivo: Mostrar que a assinatura protege o token (adiciona um caractere extra ao final do token). Esperado: 401 Unauthorized {\"mensagem\": \"Token JWT inválido ou expirado!\"}.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}X"
+      },
+      "metaSortKey": 300,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_t7",
+      "_type": "request",
+      "parentId": "fld_medicos",
+      "modified": 1764115500000,
+      "created": 1764115500000,
+      "url": "{{ _.base_url }}/medicos",
+      "name": "T7 Cadastrar médico",
+      "description": "Objetivo: Ver o 201 Created, o header Location e o recurso criado.",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Ana Souza\",\n  \"email\": \"ana.souza@medpro.com\",\n  \"telefone\": \"16999990001\",\n  \"crm\": \"123456\",\n  \"especialidade\": \"CARDIOLOGIA\",\n  \"endereco\": {\n    \"logradouro\": \"Rua das Flores\",\n    \"bairro\": \"Centro\",\n    \"cep\": \"14800000\",\n    \"cidade\": \"Araraquara\",\n    \"uf\": \"SP\",\n    \"numero\": \"100\",\n    \"complemento\": \"Sala 2\"\n  }\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": 400,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_t8",
+      "_type": "request",
+      "parentId": "fld_medicos",
+      "modified": 1764115500000,
+      "created": 1764115500000,
+      "url": "{{ _.base_url }}/medicos",
+      "name": "T8 Cadastrar um segundo médico",
+      "description": "Objetivo: Ter dados para testar ordenação e paginação. Esperado: 201 Created (número e complemento opcionais).",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Bruno Lima\",\n  \"email\": \"bruno.lima@medpro.com\",\n  \"telefone\": \"16999990002\",\n  \"crm\": \"654321\",\n  \"especialidade\": \"ORTOPEDIA\",\n  \"endereco\": {\n    \"logradouro\": \"Av. Brasil\",\n    \"bairro\": \"Centro\",\n    \"cep\": \"14800001\",\n    \"cidade\": \"Araraquara\",\n    \"uf\": \"SP\"\n  }\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": 500,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_t9",
+      "_type": "request",
+      "parentId": "fld_medicos",
+      "modified": 1764115500000,
+      "created": 1764115500000,
+      "url": "{{ _.base_url }}/medicos/1",
+      "name": "T9 Detalhar médico",
+      "description": "Objetivo: Usar o endereço devolvido no Location (ajuste o id conforme devolvido no T7). Esperado: 200 OK com todos os dados da Ana.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": 600,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_t10",
+      "_type": "request",
+      "parentId": "fld_medicos",
+      "modified": 1764115500000,
+      "created": 1764115500000,
+      "url": "{{ _.base_url }}/medicos",
+      "name": "T10 Listar com paginação",
+      "description": "Objetivo: Ver a ordenação por nome e o tamanho da página (size: 10). Teste também: {{ _.base_url }}/medicos?size=1&page=1",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": 700,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_t11",
+      "_type": "request",
+      "parentId": "fld_medicos",
+      "modified": 1764115500000,
+      "created": 1764115500000,
+      "url": "{{ _.base_url }}/medicos",
+      "name": "T11 Atualizar médico",
+      "description": "Objetivo: Ver o 200 OK com o recurso atualizado e o telefone novo.",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"id\": 1,\n  \"telefone\": \"16988887777\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": 800,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_t12",
+      "_type": "request",
+      "parentId": "fld_medicos",
+      "modified": 1764115500000,
+      "created": 1764115500000,
+      "url": "{{ _.base_url }}/medicos/1",
+      "name": "T12 Excluir médico",
+      "description": "Objetivo: Ver o 204 No Content e a exclusão lógica (ativo = false). Em seguida, repita o T10.",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": 900,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_t13",
+      "_type": "request",
+      "parentId": "fld_medicos",
+      "modified": 1764115500000,
+      "created": 1764115500000,
+      "url": "{{ _.base_url }}/medicos/9999",
+      "name": "T13 Detalhar id inexistente",
+      "description": "Objetivo: Ver o 404 Not Found do TratadorDeErros, corpo vazio, sem stack trace.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": 1000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_t14",
+      "_type": "request",
+      "parentId": "fld_medicos",
+      "modified": 1764115500000,
+      "created": 1764115500000,
+      "url": "{{ _.base_url }}/medicos",
+      "name": "T14 Cadastrar com dados inválidos",
+      "description": "Objetivo: Ver o 400 Bad Request com a lista de campos inválidos (nome, email, crm, endereco.cep).",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"\",\n  \"email\": \"email-invalido\",\n  \"telefone\": \"169\",\n  \"crm\": \"12\",\n  \"especialidade\": \"CARDIOLOGIA\",\n  \"endereco\": {\n    \"logradouro\": \"Rua X\",\n    \"bairro\": \"Centro\",\n    \"cep\": \"123\",\n    \"cidade\": \"Araraquara\",\n    \"uf\": \"SP\"\n  }\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": 1100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_t15",
+      "_type": "request",
+      "parentId": "fld_pacientes",
+      "modified": 1764115500000,
+      "created": 1764115500000,
+      "url": "{{ _.base_url }}/pacientes",
+      "name": "T15 Cadastrar paciente",
+      "description": "Objetivo: Confirmar que pacientes seguem o mesmo padrão e proteção. Esperado: 201 Created com Location.",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Carla Mendes\",\n  \"email\": \"carla.mendes@email.com\",\n  \"telefone\": \"16999990003\",\n  \"cpf\": \"12345678901\",\n  \"endereco\": {\n    \"logradouro\": \"Rua Sete\",\n    \"bairro\": \"Vila Xavier\",\n    \"cep\": \"14810000\",\n    \"cidade\": \"Araraquara\",\n    \"uf\": \"SP\",\n    \"numero\": \"50\"\n  }\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": 100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_t16",
+      "_type": "request",
+      "parentId": "fld_pacientes",
+      "modified": 1764115500000,
+      "created": 1764115500000,
+      "url": "{{ _.base_url }}/pacientes",
+      "name": "T16 Listar pacientes sem token",
+      "description": "Objetivo: Fechar o ciclo mostrando a proteção também em pacientes. Esperado: 401 Unauthorized. Repetindo com Bearer Token = {{ _.token }}: 200 OK com a Carla na lista.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": 200,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    }
+  ]
+}
